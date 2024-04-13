@@ -1,49 +1,52 @@
+import { useContext, useState } from 'react';
+import { Toast } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-
-import { useContext, useState } from 'react';
-import { Toast } from 'react-bootstrap';
 import { DartsContext } from '../App';
 import PlayerScores from "./PlayerScores";
 
 const ScoreBoard = () => {
     
-    const { initialScore, players } = useContext(DartsContext);
-    const [player1Scores, setPlayer1Scores] = useState([]); 
+    const { initialScore, players, setSize } = useContext(DartsContext);
+    const [player1Scores, setPlayer1Scores] = useState([]);  // each scores array is to be a 2-d array where inner arrays are of max size 3 (3 darts per turn)
     const [player1LegsWon, setPlayer1LegsWon] = useState(0); 
     const [player2Scores, setPlayer2Scores] = useState([]); 
     const [player2LegsWon, setPlayer2LegsWon] = useState(0); 
 
     // Toast 
     const [showToast, setShowToast] = useState(false); 
-    const [toastBg, setToastBg] = useState('primary'); 
+    const [toastBg, setToastBg] = useState('primary'); // Tip: Using "warning" for yellow toast message background and "danger" for red
     const [toastMessage, setToastMessage] = useState(''); 
     const [toastHeader, setToastHeader] = useState(''); 
 
-    const addPlayer1Score = value => addScore(value, player1Scores, setPlayer1Scores);
-    const addPlayer2Score = value => addScore(value, player2Scores, setPlayer2Scores);
+    const addPlayer1Score = value => addScore(value, player1Scores, setPlayer1Scores); // Helper that performs score add for player 1
+    const addPlayer2Score = value => addScore(value, player2Scores, setPlayer2Scores); // Helper that performs score add for player 2
     const addScore = (value, scores, setScore) => {
+        // Check if the scores array is not empty and if the last inner array has a length less than 3 (then we want to add to it)
         if (scores.length > 0 && scores[scores.length - 1].length < 3) {
-            scores[scores.length - 1].push(value);
-            setScore([...scores]);
+            scores[scores.length - 1].push(value); //Add the new value to the end of the current non-full inner scores array
+            setScore([...scores]); //Update the scores
         }
         else {
-            setScore([...scores, [value]])
+            // We come here if either this is the first score we are adding OR if the last score added made last inner array full
+            setScore([...scores, [value]]); // add the score to the players scores
         }
 
+        // Check if we have a leg winner
         checkWinner();
     }
 
-    const resetPlayer1Round = () => resetRound(player1Scores, setPlayer1Scores);
-    const resetPlayer2Round = () => resetRound(player2Scores, setPlayer2Scores);
+    const resetPlayer1Round = () => resetRound(player1Scores, setPlayer1Scores); // Helper method specific for resetting player 1 round
+    const resetPlayer2Round = () => resetRound(player2Scores, setPlayer2Scores); // Helper method specific for resetting player 2 round
 
-    const resetRound = (playerScores, setScores) =>
-    {
+    const resetRound = (playerScores, setScores) => {
+        // Check if scores array is not empty and the last inner scores array is not of length 3
+        // If it is of length 3 it means that the score we entered (and did not add) would have been the first of the round
         if (playerScores.length > 0 && playerScores[playerScores.length - 1].length !== 3) {
-            const resetScores = [...playerScores];
-            resetScores.pop();
-            setScores(resetScores);
+            const resetScores = [...playerScores]; //Make a copy of the current scores array
+            resetScores.pop(); //remove the whole last (current) round
+            setScores(resetScores);  //Update the scores
 
             //TODO: Make user aware that this round was reset due to them going below zero or down to 1.
         }
@@ -52,40 +55,53 @@ const ScoreBoard = () => {
     // Find winner of leg, if any
     const checkWinner = () => {
         if (player1Scores.length > 0) {
+            // calculate how many points player 1 has remaining
             const remaining = initialScore - player1Scores.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + curr, 0), 0);
 
             if (remaining === 0) {
-                setPlayer1LegsWon(player1LegsWon + 1);
+                // We come here if player 1 has won this round
+                setPlayer1LegsWon(player1LegsWon + 1); //Increment leg wins
+
+                // Set toast and show it
                 setToastBg('primary');
                 setToastHeader('We have a leg winner!');
                 setToastMessage(`${players[0]} won the leg!`)
                 setShowToast(true);
+
+                //Reset scoreboard
                 reset();
                 return;
             }
         }
 
         if (player2Scores.length > 0) {
+            // calculate how many points player 2 has remaining
             const remaining = initialScore - player2Scores.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + curr, 0), 0);
 
             if (remaining === 0) {
-                setPlayer2LegsWon(player2LegsWon + 1);
+                // We come here if player 2 has won this round
+                setPlayer2LegsWon(player2LegsWon + 1); //Increment leg wins
+
+                // Set toast and show it
                 setToastBg('primary');
                 setToastHeader('We have a leg winner!');
                 setToastMessage(`${players[1]} won the leg!`);
                 setShowToast(true);
+
+                //Reset scoreboard
                 reset();
                 return;
             }
         }
     }
 
-    // Reset all scores
+    // Reset all scores arrays
     const reset = () => {
         setPlayer1Scores([]);
         setPlayer2Scores([]);
 
         // TODO: Check for set winner and make user aware using Toast message (see example in above method)
+        // Use setSize variable for comparison
 
     }
 

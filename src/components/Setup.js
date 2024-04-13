@@ -7,8 +7,7 @@ const Setup = ({ setPlayers, setInitialScore, setSetSize }) => {
     // State
     let player1Name = '';
     let player2Name = '';
-
-    const { setSize } = useContext(DartsContext);
+    const { setSize } = useContext(DartsContext); // get set size from parent through the use of context
     const [validated, setValidated] = useState(false);
     const [setSizeIsValid, setSetSizeIsValid] = useState(true);
   
@@ -25,17 +24,22 @@ const Setup = ({ setPlayers, setInitialScore, setSetSize }) => {
 		}
 
 		if (form.checkValidity() === true) {
+			// If the form is valid (and setsize is odd) we set the players array with the new names
+			// We have already set the setSize itself to the parent property as it is done continuously on input
 			setPlayers([player1Name, player2Name]);
-		}			
-			setValidated(true);
+		}
+			
+		setValidated(true);
   	}
 
-    const style = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
+	// CSS
+	const style = {
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center'
+	};
+	
     return (
       <Form style={style} noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
