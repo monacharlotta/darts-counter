@@ -17,11 +17,20 @@ const AddPlayers = ({ addPlayer: addPlayerToState }) => {
             setMessage(`Added ${name}!`);
         }        
     }
+    const style = {
+        width: '50%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
   return (
-    <div>
+    <div style={style}>
+        <div style={{width: '50%', display: 'flex', justifyContent: 'space-around', marginBottom: '2px'}}>
         <label htmlFor="playerInput">Name: </label>
         <input type="text" name="playerInput" value={name} onChange={input => setName(input.target.value)} />
         <Button variant="outline-primary" onClick={addPlayer}>Add</Button>
+        </div>        
         <p>{message}</p>
     </div>
   )
