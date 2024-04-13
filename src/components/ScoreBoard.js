@@ -10,7 +10,7 @@ const ScoreBoard = () => {
     
     const { initialScore, players, setSize } = useContext(DartsContext);
     const [player1Scores, setPlayer1Scores] = useState([]);  // each scores array is to be a 2-d array where inner arrays are of max size 3 (3 darts per turn)
-    const [player1LegsWon, setPlayer1LegsWon] = useState(0); 
+    const [player1LegsWon, setPlayer1LegsWon] = useState(0); // Keeps track of amount of leg wins
     const [player2Scores, setPlayer2Scores] = useState([]); 
     const [player2LegsWon, setPlayer2LegsWon] = useState(0); 
 
@@ -54,6 +54,7 @@ const ScoreBoard = () => {
 
     // Find winner of leg, if any
     const checkWinner = () => {
+        // Check player 1
         if (player1Scores.length > 0) {
             // calculate how many points player 1 has remaining
             const remaining = initialScore - player1Scores.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + curr, 0), 0);
@@ -74,6 +75,7 @@ const ScoreBoard = () => {
             }
         }
 
+        // Check player 2
         if (player2Scores.length > 0) {
             // calculate how many points player 2 has remaining
             const remaining = initialScore - player2Scores.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + curr, 0), 0);
@@ -93,6 +95,9 @@ const ScoreBoard = () => {
                 return;
             }
         }
+
+        // "Technically" both players could win on the same round and player 1 would then be named the winner (this function does not prevent it)
+        // BUT this function is run once for every score added, and only one player's scores can be incremented at once --> so it is OK! :)
     }
 
     // Reset all scores arrays
@@ -101,7 +106,7 @@ const ScoreBoard = () => {
         setPlayer2Scores([]);
 
         // TODO: Check for set winner and make user aware using Toast message (see example in above method)
-        // Use setSize variable for comparison
+        // Use setSize variable for comparison (if one player has wins that is more than 50% of set size --> winner)
 
     }
 
