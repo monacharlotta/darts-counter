@@ -5,8 +5,8 @@ import { DartsContext } from '../App';
 
 const Setup = ({ setPlayers, setInitialScore, setSetSize }) => {
     // State
-    let player1Name = '';
-    let player2Name = '';
+	const [player1Name, setPlayer1Name] = useState('');
+	const [player2Name, setPlayer2Name] = useState('');
     const { setSize } = useContext(DartsContext); // get set size from parent through the use of context
     const [validated, setValidated] = useState(false);
     const [setSizeIsValid, setSetSizeIsValid] = useState(true);
@@ -44,12 +44,12 @@ const Setup = ({ setPlayers, setInitialScore, setSetSize }) => {
       <Form style={style} noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>Enter Player 1 Name</Form.Label>
-          <Form.Control type="text" onChange={e => player1Name = e.target.value} required placeholder="Player 1" />
+          <Form.Control type="text" onChange={e => setPlayer1Name(e.target.value)} required placeholder="Player 1" />
           <Form.Control.Feedback type="invalid">Please enter a name!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
           <Form.Label>Enter Player 2 Name</Form.Label>
-          <Form.Control type="text" onChange={e => player2Name = e.target.value} required placeholder="Player 2" />
+          <Form.Control type="text" onChange={e => setPlayer2Name(e.target.value)} required placeholder="Player 2" />
           <Form.Control.Feedback type="invalid">Please enter a name!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group style={{paddingBottom: '10px'}}>
@@ -57,7 +57,7 @@ const Setup = ({ setPlayers, setInitialScore, setSetSize }) => {
           <Form.Check inline name="mode" label="501 up" onInput={() => setInitialScore(501)} type="radio" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
-          <Form.Label>Set size</Form.Label>
+          <Form.Label>Set size (max legs to be played)</Form.Label>
           <Form.Control min={1} isInvalid={!setSizeIsValid} type="number" onChange={e => setSetSize(e.target.value)} required value={setSize} />
           <Form.Control.Feedback type="invalid">Please enter an odd set size!</Form.Control.Feedback>
         </Form.Group>
