@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { DartsContext } from "../App";
 
-const PlayerScores = ({ playerName, scores, addScore, wins }) => {
+const PlayerScores = ({ playerName, scores, addScore, wins, resetRound }) => {
     
     const { initialScore } = useContext(DartsContext);
     const [newScore, setNewScore] = useState('');
@@ -16,8 +16,16 @@ const PlayerScores = ({ playerName, scores, addScore, wins }) => {
     const HandleAdd = () => {
         const newValue = parseInt(newScore);
         if (newValue) {
-            addScore(newValue);
-            setNewScore('');
+            const diff = calculateRemaingScore() - newValue;
+            if (diff !== 0 && diff <= 1) {
+                //Reset round
+                resetRound();
+            }
+            else {
+                // Only add score if it does not go below zero or to 1
+                addScore(newValue);
+            }
+            setNewScore(''); // reset new score field
         }
     }
 
