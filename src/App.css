@@ -7,10 +7,12 @@
   justify-content: center;
   align-items: center; /* Center vertically */
   background-color: rgb(145, 206, 221);
-  padding: 20px; /* padding */
+  padding: 40px; /* padding */
   margin-top: 50px; /* Adding margin to push content down */
-  border-radius: 10px; /* Adding border radius for rounded corners */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adding box shadow for depth */
+  border-radius: 8px; /* Adding border radius for rounded corners */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+  background-image: linear-gradient(to bottom, rgb(62, 116, 130), rgb(102, 195, 218)); /* Adding a gradient to the background*/
 }
 
 
