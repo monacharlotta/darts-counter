@@ -48,9 +48,18 @@ const ScoreBoard = () => {
             resetScores.pop(); //remove the whole last (current) round
             setScores(resetScores);  //Update the scores
 
-            //TODO: Make user aware that this round was reset due to them going below zero or down to 1.
+            // Check if the reset was due to going below zero or down to 1, restarts the round and gives a notification
+        const lastScore = playerScores[playerScores.length - 1].reduce((prev, curr) => prev + curr, 0);
+        if (lastScore <= 1) {
+            // Display toast notification
+            setToastBg('warning');
+            setToastHeader('Round Reset');
+            setToastMessage('Round was reset due to going below zero or down to 1.');
+            setShowToast(true);
         }
     }
+}
+
 
     // Find winner of leg, if any
     const checkWinner = () => {
