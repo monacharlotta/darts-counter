@@ -6,13 +6,17 @@
   display: flex;
   justify-content: center;
   align-items: center; /* Center vertically */
-  background-color: rgb(145, 206, 221);
   padding: 40px; /* padding */
   margin-top: 50px; /* Adding margin to push content down */
   border-radius: 8px; /* Adding border radius for rounded corners */
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-  background-image: linear-gradient(to bottom, rgb(62, 116, 130), rgb(102, 195, 218)); /* Adding a gradient to the background*/
+  background-image: linear-gradient(to bottom, rgb(170, 88, 159), rgb(102, 195, 218)); /* Adding a gradient to the background*/
+  transition: transform 0.3s; /* adding transition for smooth animation */
+}
+
+.App:hover {
+  transform: scale(1.05); 
 }
 
 
