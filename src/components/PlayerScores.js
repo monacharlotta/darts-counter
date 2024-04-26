@@ -24,7 +24,7 @@ const PlayerScores = ({ playerName, scores, addScore, wins, resetRound }) => {
             if (diff !== 0 && diff <= 1) {
                 // If adding this score would cause in a new remaining value that is less than or equal to 1 but NOT zero
                 // --> reset the round and DON'T add it as we are "out of bounds"
-                resetRound();
+                resetRound(true);
             }
             else {
                 // Only add score if it does not go below zero or to 1

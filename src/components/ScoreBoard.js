@@ -37,10 +37,10 @@ const ScoreBoard = () => {
         checkWinner();
     }
 
-    const resetPlayer1Round = () => resetRound(player1Scores, setPlayer1Scores); // Helper method specific for resetting player 1 round
-    const resetPlayer2Round = () => resetRound(player2Scores, setPlayer2Scores); // Helper method specific for resetting player 2 round
+    const resetPlayer1Round = (wentBelow) => resetRound(player1Scores, setPlayer1Scores, wentBelow); // Helper method specific for resetting player 1 round
+    const resetPlayer2Round = (wentBelow) => resetRound(player2Scores, setPlayer2Scores, wentBelow); // Helper method specific for resetting player 2 round
 
-    const resetRound = (playerScores, setScores) => {
+    const resetRound = (playerScores, setScores, wentBelow) => {
         // Check if scores array is not empty and the last inner scores array is not of length 3
         // If it is of length 3 it means that the score we entered (and did not add) would have been the first of the round
         if (playerScores.length > 0 && playerScores[playerScores.length - 1].length !== 3) {
@@ -49,13 +49,12 @@ const ScoreBoard = () => {
             setScores(resetScores);  //Update the scores
 
             // Check if the reset was due to going below zero or down to 1, restarts the round and gives a notification
-        const lastScore = playerScores[playerScores.length - 1].reduce((prev, curr) => prev + curr, 0);
-        if (lastScore <= 1) {
-            // Display toast notification
-            setToastBg('warning');
-            setToastHeader('Round Reset');
-            setToastMessage('Round was reset due to going below zero or down to 1.');
-            setShowToast(true);
+            if (wentBelow) {
+                // Display toast notification
+                setToastBg('warning');
+                setToastHeader('Round Reset');
+                setToastMessage('Round was reset due to going below zero or down to 1.');
+                setShowToast(true);
         }
     }
 }
